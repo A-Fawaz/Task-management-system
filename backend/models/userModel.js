@@ -1,17 +1,18 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const Joi = require('joi');
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    username:{
+    username: {
         type: String,
         required: true
     },
-    email:{
+    email: {
         type: String,
         required: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
@@ -24,7 +25,32 @@ const userSchema = new Schema({
         type: String,
         enum: ['online', 'offline'],
         default: 'offline'
-    }
-},{timestamps:true})
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    verficationtoken:{
+        type: String,
+        
 
-module.exports = mongoose.model('user', userSchema )
+    }
+
+}, { timestamps: true });
+
+userSchema.methods.validateRegisterUser = function(obj) {
+    const schema = Joi.object({
+        username: Joi.string().trim().min(2).max(100).required(),
+        email: Joi.string().trim().min(5).max(100).required().email(),
+        password: Joi.string().trim().min(8).required(),
+        isVerified: Joi.boolean().default(false)
+    
+    });
+    return schema.validate(obj);
+};
+
+const User = mongoose.model('user', userSchema);
+
+module.exports = {
+    User
+};
