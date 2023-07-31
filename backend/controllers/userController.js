@@ -15,11 +15,21 @@ const createToken = (res, _id) => {
  }
  
   
-//get all tasks
+//get all users
 const getUsers = async (req, res) => {
-    const users = await User.find({})
+    const users = await User.find({}).sort({createdAt:'desc'});
     res.status(200).json(users)
 }
+// get users count
+const getUsersCount = async (req, res) => {
+    // const client = new MongoClient(process.env.MONGODB_URI);
+    try{
+        const usersCount = await User.countDocuments({})
+        res.status(200).json(usersCount)
+        console.log(usersCount)
+    }
+    catch(error){res.status(400).json({error: error.message})}
+    };
 
 //get a single User
 const getUser = async(req, res) => {
@@ -127,5 +137,6 @@ module.exports = {
     updateUser,
     signupUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    getUsersCount
 }  

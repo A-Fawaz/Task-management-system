@@ -7,7 +7,8 @@ const{
     updateUser,
     signupUser,
     loginUser,
-    logoutUser
+    logoutUser,
+    getUsersCount
 } = require('../controllers/userController')
 const {protect} = require('../middleware/authMiddleware.js')
 const router = express.Router()
@@ -26,7 +27,8 @@ router.post('/logout', logoutUser)
 //GET all users
 router.get('/',getUsers)
 
-
+//Get users count
+router.get('/count', getUsersCount)
 //GET a single user
 router.get('/:id',protect,getUser)
 

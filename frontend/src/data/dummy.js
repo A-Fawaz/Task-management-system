@@ -485,7 +485,7 @@ export const links = [
     links: [
       {
         name: 'Tasks',
-        icon: <AiOutlineShoppingCart />,
+        icon: <FiEdit />,
       },
       {
         name: 'employees',
@@ -613,46 +613,6 @@ export const chatData = [
   },
 ];
 
-export const earningData = [
-  {
-    icon: <MdOutlineSupervisorAccount />,
-    amount: '39,354',
-    percentage: '-4%',
-    title: 'Customers',
-    iconColor: '#03C9D7',
-    iconBg: '#E5FAFB',
-    pcColor: 'red-600',
-  },
-  {
-    icon: <BsBoxSeam />,
-    amount: '4,396',
-    percentage: '+23%',
-    title: 'Products',
-    iconColor: 'rgb(255, 244, 229)',
-    iconBg: 'rgb(254, 201, 15)',
-    pcColor: 'green-600',
-  },
-  {
-    icon: <FiBarChart />,
-    amount: '423,39',
-    percentage: '+38%',
-    title: 'Sales',
-    iconColor: 'rgb(228, 106, 118)',
-    iconBg: 'rgb(255, 244, 229)',
-
-    pcColor: 'green-600',
-  },
-  {
-    icon: <HiOutlineRefresh />,
-    amount: '39,354',
-    percentage: '-12%',
-    title: 'Refunds',
-    iconColor: 'rgb(0, 194, 146)',
-    iconBg: 'rgb(235, 250, 242)',
-    pcColor: 'red-600',
-  },
-];
-
 export const recentTransactions = [
   {
     icon: <BsCurrencyDollar />,
@@ -704,32 +664,7 @@ export const recentTransactions = [
   },
 ];
 
-export const weeklyStats = [
-  {
-    icon: <FiShoppingCart />,
-    amount: '-$560',
-    title: 'Top Sales',
-    desc: 'Johnathan Doe',
-    iconBg: '#FB9678',
-    pcColor: 'red-600',
-  },
-  {
-    icon: <FiStar />,
-    amount: '-$560',
-    title: 'Best Seller',
-    desc: 'MaterialPro Admin',
-    iconBg: 'rgb(254, 201, 15)',
-    pcColor: 'red-600',
-  },
-  {
-    icon: <BsChatLeft />,
-    amount: '+$560',
-    title: 'Most Commented',
-    desc: 'Ample Admin',
-    iconBg: '#00C292',
-    pcColor: 'green-600',
-  },
-];
+
 
 export const productsPerformance = [
   {

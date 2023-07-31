@@ -5,13 +5,15 @@ const{
     getProject,
     createProject,
     deleteProject,
-    updateProject
+    updateProject,
+    getProjectsCounter
 } = require('../controllers/projectController')
 const router = express.Router()
 
 //GET all projects
 router.get('/', getProjects)
-
+//GET number of projects
+router.get('/count', getProjectsCounter)
 
 //GET a single project
 router.get('/:id',getProject)

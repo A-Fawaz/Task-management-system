@@ -1,16 +1,32 @@
 const Project = require('../models/projectModel')
 const mongoose = require('mongoose')
+// const { MongoClient } = require('mongodb');
+// const DB_NAME = 'tasksmanagement'; 
+// const COLLECTION_NAME = 'projects';
 //get all projects
 
 const getProjects = async (req, res) => {
     try{
-    const projects = await Project.find({})
+    const projects = await Project.find({}).sort({createdAt:'desc'});
     res.status(200).json(projects)
 }
 catch(error){res.status(400).json({error: error.message})}
 }
 
+// get number of all projects
 
+
+const getProjectsCounter = async (req, res) => {
+    // const client = new MongoClient(process.env.MONGODB_URI);
+    try{
+        const projectsCount = await Project.countDocuments({})
+        res.status(200).json(projectsCount)
+        console.log(projectsCount)
+    }
+    catch(error){res.status(400).json({error: error.message})}
+    };
+    
+ 
 
 //get a single project
 const getProject = async(req, res) => {
@@ -73,5 +89,6 @@ module.exports = {
     getProject,
     createProject,
     deleteProject,
-    updateProject
+    updateProject,
+    getProjectsCounter
 }
