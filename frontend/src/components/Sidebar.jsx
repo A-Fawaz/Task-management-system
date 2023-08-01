@@ -2,23 +2,125 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { SiTask } from 'react-icons/si';
 import { FiPercent, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
+import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
+import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
 
 import { MdOutlineCancel } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
-import { links } from '../data/dummy';
+// import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 
-const Sidebar = () => {
+const   Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } = useStateContext();
+ 
+  const userRole = 'admin';
 
-  const handleCloseSideBar = () => {
+  let links = [];
+  if (userRole === 'admin') {
+    // Add admin-specific routes here
+     links = [
+      {
+        title: 'Dashboard',
+        links: [
+          {
+            route: '',
+            name: 'Stats',
+            icon: <FiPercent />,
+          },
+        ],
+      },
+    
+      {
+        title: 'Pages',
+        links: [
+          {
+            route: 'Tasks',
+            name: 'Tasks',
+            icon: <FiEdit />,
+          },
+        
+          
+        ],
+      },
+      {
+        title: 'Apps',
+        links: [
+          {
+            route: 'calendar',
+            name: 'calendar',
+            icon: <AiOutlineCalendar />,
+          },
+          {
+            route: 'kanban',
+            name: 'kanban',
+            icon: <BsKanban />,
+          },
+          {
+            route: 'editor',
+            name: 'editor',
+            icon: <FiEdit />,
+          },
+       
+        ],
+      },
+     
+    ];
+  } else if (userRole === 'user') {
+    // Add user-specific routes here
+     links = [
+    
+    
+      {
+        title: 'Pages',
+        links: [
+          {
+            route: 'Tasks',
+            name: 'Tasks',
+            icon: <FiEdit />,
+          },
+        
+          
+        ],
+      },
+      {
+        title: 'Apps',
+        links: [
+          {
+            route: 'calendar',
+            name: 'calendar',
+            icon: <AiOutlineCalendar />,
+          },
+          {
+            route: 'kanban',
+            name: 'kanban',
+            icon: <BsKanban />,
+          },
+          {
+            route: 'editor',
+            name: 'editor',
+            icon: <FiEdit />,
+          },
+       
+        ],
+      },
+     
+    ];
+    // Additional routes for 'user' role can be added here, if needed
+  }
+  
+  // Now, 'filteredLinks' will contain the routes based on the userRole
+  console.log(links);
+
+
+
+  const handleCloseSideBar = () => { 
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
   };
 
-  const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2';
+  const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-black  text-md m-2 bg-light-gray m-2';
   const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2';
 
   return (
@@ -42,7 +144,6 @@ const Sidebar = () => {
           
           <div className="mt-10 ">
           <Link to="/" onClick={handleCloseSideBar} className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 ">
-          <FiPercent /> <span>Stats</span>
             </Link>
             {links.map((item) => (
               <div key={item.title}>
@@ -51,7 +152,7 @@ const Sidebar = () => {
                 </p>
                 {item.links.map((link) => (
                   <NavLink
-                    to={`/${link.name}`}
+                    to={`/${link.route}`}
                     key={link.name}
                     onClick={handleCloseSideBar}
                     style={({ isActive }) => ({

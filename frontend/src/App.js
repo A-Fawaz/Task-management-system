@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import ThemeSettings from './components/ThemeSettings';
-import Ecommerce from './pages/Ecommerce';
+import Dashboard from './pages/Dashboard';
 import { useStateContext } from './contexts/ContextProvider';
 import { Orders,calendar,Kanban,} from './pages';
 import './App.css'
@@ -50,8 +50,8 @@ min-h-screen w-full ${activeMenu ?
 
               <Routes>
                 {/* dashboard  */}
-                <Route path="/" element={<Ecommerce />}/>
-                <Route path="/ecommerce" element={<Ecommerce />}/>
+                <Route path="/" element={<Dashboard />}/>
+                <Route path="/ecommerce" element={<Dashboard />}/>
 
                 {/* pages  */}
                 <Route path="/tasks" element={<tasks />} />
