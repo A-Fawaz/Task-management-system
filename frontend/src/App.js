@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import ThemeSettings from './components/ThemeSettings';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/dashboard';
 import { useStateContext } from './contexts/ContextProvider';
 import { Orders,calendar,Kanban,} from './pages';
 import './App.css'

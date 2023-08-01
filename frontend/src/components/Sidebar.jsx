@@ -69,8 +69,6 @@ const   Sidebar = () => {
   } else if (userRole === 'user') {
     // Add user-specific routes here
      links = [
-    
-    
       {
         title: 'Pages',
         links: [
