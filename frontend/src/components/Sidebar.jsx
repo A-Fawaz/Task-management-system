@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { SiTask } from 'react-icons/si';
 import { FiPercent, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
-
 import { MdOutlineCancel } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
@@ -13,13 +13,18 @@ import { useStateContext } from '../contexts/ContextProvider';
 
 const   Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } = useStateContext();
- 
-  const userRole = 'admin';
-
-  let links = [];
+  const [links, setLinks] = useState([]);
+  const [toValue, setToValue] = useState('/');
+  const userRole = 'user';
+  const updateToValue = (value) => {
+    setToValue(value);
+  };
+  useEffect(() => {
+  
   if (userRole === 'admin') {
+    updateToValue('/');
     // Add admin-specific routes here
-     links = [
+    setLinks([
       {
         title: 'Dashboard',
         links: [
@@ -35,49 +40,45 @@ const   Sidebar = () => {
         title: 'Pages',
         links: [
           {
-            route: 'Tasks',
-            name: 'Tasks',
+            route: 'projectspage',
+            name: 'Projects',
             icon: <FiEdit />,
           },
+          {
+            route: 'Userspage',
+            name: 'Users',
+            icon: <FiEdit />,
+          }
+          
         
           
         ],
       },
-      {
-        title: 'Apps',
-        links: [
-          {
-            route: 'calendar',
-            name: 'calendar',
-            icon: <AiOutlineCalendar />,
-          },
-          {
-            route: 'kanban',
-            name: 'kanban',
-            icon: <BsKanban />,
-          },
-          {
-            route: 'editor',
-            name: 'editor',
-            icon: <FiEdit />,
-          },
-       
-        ],
-      },
+ 
      
-    ];
+    ]);
   } else if (userRole === 'user') {
-    // Add user-specific routes here
-     links = [
+    updateToValue('/userhomepage');
+    setLinks( [
       {
-        title: 'Pages',
+        title: 'Projects',
         links: [
           {
-            route: 'Tasks',
-            name: 'Tasks',
+            route: 'Project1',
+            name: 'project1',
             icon: <FiEdit />,
           },
-        
+          {
+            route: 'Project2',
+            name: 'project2',
+            icon: <FiEdit />,
+          },
+          {
+            route: 'Project3',
+            name: 'project3',
+            icon: <FiEdit />,
+          },
+          
           
         ],
       },
@@ -101,14 +102,31 @@ const   Sidebar = () => {
           },
        
         ],
+      },  
+      {
+        title: 'Options',
+        links: [
+          {
+            route: 'createproject',
+            name: 'Create a project',
+            icon: <AiOutlineCalendar />,
+          },
+          {
+            route: 'addtask',
+            name: 'Add a task',
+            icon: <BsKanban />,
+          },
+       
+        ],
       },
      
-    ];
+    ]);
     // Additional routes for 'user' role can be added here, if needed
   }
+}, [userRole]);
   
   // Now, 'filteredLinks' will contain the routes based on the userRole
-  console.log(links);
+  
 
 
 
@@ -126,7 +144,8 @@ const   Sidebar = () => {
       {activeMenu && (
         <>
           <div className="flex justify-between items-center z-40">
-            <Link to="/" onClick={handleCloseSideBar} className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 ">
+            
+            <Link id='a' to={toValue} onClick={handleCloseSideBar} className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 ">
               <SiTask /> <span>Task MS</span>
             </Link>
             <TooltipComponent content="Menu" position="BottomCenter">

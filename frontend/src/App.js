@@ -11,6 +11,7 @@ import Dashboard from './pages/dashboard';
 import { useStateContext } from './contexts/ContextProvider';
 import { Orders,calendar,Kanban,} from './pages';
 import './App.css'
+import Scheduler from './pages/calendar';
 const App = () => {
   const {activeMenu} = useStateContext();
   return (
@@ -59,7 +60,7 @@ min-h-screen w-full ${activeMenu ?
                 {/* apps  */}
                 <Route path="/kanban" element={<Kanban />}/>
                 <Route path="/editor" element={<editor />}/>
-                <Route path="/calendar" element={<calender />}/>
+                <Route path="/calendar" element={<Scheduler />}/>
                 <Route path="/color-picker" element={<color-picker />} />
 
                 {/* charts  */}
