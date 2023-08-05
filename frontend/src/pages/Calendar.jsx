@@ -4,13 +4,18 @@ import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import  axios  from "axios";
 import { scheduleData } from '../data/dummy';
 import  Header  from '../components/Header';
+import { useParams, useSearchParams } from 'react-router-dom';
+
 
 // eslint-disable-next-line react/destructuring-assignment
 const PropertyPane = (props) => <div className="mt-5">{props.children}</div>;
 
 const Scheduler = () => {
   const [scheduleObj, setScheduleObj] = useState();
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState([]); 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const projectId = searchParams.get('projectId');
+
 
 const scheduleData = [
   {
@@ -28,7 +33,7 @@ const scheduleData = [
 useEffect(() => {
  async function getTasks() {
       try {
-        const response = await axios.get('http://localhost:3001/api/tasks');
+        const response = await axios.get('http://localhost:3001/api/tasks?projectId=' + projectId);
         console.log(response.data);
         setTasks(response.data);
       } catch (error) {
@@ -42,7 +47,7 @@ useEffect(() => {
 const transformedData = tasks.map((task) => ({
   Id: task._id,
   Subject: task.task_name,
-  StartTime: new Date(task.adding_date),
+  StartTime: new Date(task.createdAt),
   EndTime: new Date(task.due_date),
   Location: task.status,
   // Other properties mapping...

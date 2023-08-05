@@ -9,9 +9,9 @@ import Sidebar from './components/Sidebar';
 import ThemeSettings from './components/ThemeSettings';
 import Dashboard from './pages/dashboard';
 import { useStateContext } from './contexts/ContextProvider';
-import { Orders,calendar,Kanban,} from './pages';
+import { Orders,Calendarlendar,Kanban,} from './pages';
 import './App.css'
-import Scheduler from './pages/calendar';
+import Scheduler from './pages/Calendar';
 const App = () => {
   const {activeMenu} = useStateContext();
   return (

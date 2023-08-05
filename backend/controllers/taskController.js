@@ -1,9 +1,26 @@
 const Task = require('../models/taskModel')
 const mongoose = require('mongoose')
 //get all tasks
+// const getTasks = async (req, res) => {
+//     const tasks = await Task.find({}).sort({createdAt:'desc'});
+//     res.status(200).json(tasks)
+// }
 const getTasks = async (req, res) => {
-    const tasks = await Task.find({}).sort({createdAt:'desc'});
-    res.status(200).json(tasks)
+    const { projectId } = req.query;
+    let query = {};
+
+    // If projectId is provided in the request, add it to the query
+    if (projectId) {
+        query = { projectId }; // Assuming 'projectId' is the name of the field in your Task model
+        console.log(projectId);
+    }
+
+    try {
+        const tasks = await Task.find(query).sort({ createdAt: 'desc' });
+        res.status(200).json(tasks);
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 }
 
 
