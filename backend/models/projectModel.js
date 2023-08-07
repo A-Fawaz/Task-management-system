@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const projectSchema = new mongoose.Schema({
     project_name: {
       type: String,
-      required: true
+      required: true,
+      unique:true,
     },
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -13,7 +14,6 @@ const projectSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    // Other relevant project fields
   },{timestamps:true});
 
 module.exports = mongoose.model('project', projectSchema )

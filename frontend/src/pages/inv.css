@@ -1,0 +1,53 @@
+
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+ 
+
+  .animate-star1 {
+    animation: moveStar1 8s linear infinite;
+  }
+
+  .animate-star2 {
+    animation: moveStar2 10s linear infinite;
+  }
+
+  .animate-star3 {
+    animation: moveStar3 12s linear infinite;
+  }
+
+  @keyframes moveStar1 {
+    0%, 100% {
+      transform: translate(-50%, -50%);
+    }
+    50% {
+      transform: translate(400%, 400%);
+    }
+  }
+
+  @keyframes moveStar2 {
+    0%, 100% {
+      transform: translate(-50%, -50%);
+    }
+    50% {
+        transform: translate(400%, 1vh);
+
+    }
+  }
+
+  @keyframes moveStar3 {
+    0%, 100% {
+      transform: translate(-50%, -50%);
+    }
+    50% {
+      transform: translate(50vw, 70vh);
+    }
+  }

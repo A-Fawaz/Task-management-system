@@ -4,7 +4,9 @@ const{
     getTasks,
     getTask,
     deleteTask,
-    updateTask
+    updateTask,
+    getTasksCount,
+    getTasksWithProjectInfo
 } = require('../controllers/taskController')
 
 const router = express.Router()
@@ -12,6 +14,8 @@ const router = express.Router()
 //GET all tasks
 router.get('/', getTasks)
 
+router.get('/count', getTasksCount)
+router.get('/TasksWithProjectInfo', getTasksWithProjectInfo)
 
 //GET a single task
 router.get('/:id', getTask)
