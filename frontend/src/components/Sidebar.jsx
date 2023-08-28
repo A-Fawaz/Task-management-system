@@ -2,11 +2,13 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { SiTask } from 'react-icons/si';
-import { FiPercent, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
-import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
-import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
+import { FiPercent, FiEdit} from 'react-icons/fi';
+import { AiOutlineCalendar} from 'react-icons/ai';
+import { BsKanban } from 'react-icons/bs';
 import { MdOutlineCancel } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
+import { useParams, useSearchParams } from 'react-router-dom';
+
 
 // import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
@@ -15,6 +17,9 @@ const   Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } = useStateContext();
   const [links, setLinks] = useState([]);
   const [toValue, setToValue] = useState('/');
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log(searchParams.get('projectId'));
+  const projectId = searchParams.get('projectId');
   const userRole = 'user';
   const updateToValue = (value) => {
     setToValue(value);
@@ -86,20 +91,20 @@ const   Sidebar = () => {
         title: 'Apps',
         links: [
           {
-            route: 'calendar',
+            route: 'calendar/?projectId='+ projectId,
             name: 'calendar',
             icon: <AiOutlineCalendar />,
           },
           {
-            route: 'kanban',
+            route: 'kanban/?projectId='+ projectId,
             name: 'kanban',
             icon: <BsKanban />,
           },
-          {
-            route: 'editor',
-            name: 'editor',
-            icon: <FiEdit />,
-          },
+          // {
+          //   route: 'editor',
+          //   name: 'editor',
+          //   icon: <FiEdit />,
+          // },
        
         ],
       },  

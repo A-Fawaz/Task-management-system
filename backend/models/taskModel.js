@@ -13,7 +13,7 @@ const taskSchema = new Schema({
     },
     task_description: {
         type: String,
-        required: true
+        required: false
     },
     status:{
         type: String,
@@ -29,6 +29,10 @@ const taskSchema = new Schema({
         type: Date,
         required: true
     },
+    StartTime:{
+        type: Date,
+        required: true
+    }
     
 },{timestamps:true}
 );

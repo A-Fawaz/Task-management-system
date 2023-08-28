@@ -5,10 +5,8 @@ import { BsChatLeft } from 'react-icons/bs';
 import { RiNotification3Line } from 'react-icons/ri';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-
 import avatar from '../data/avatar.jpg';
 // import { Cart, Chat, Notification, UserProfile } from './components';
-import Cart from './Cart.jsx';
 import Chat from './Chat.jsx';
 import Notification from './Notification.jsx';
 import UserProfile from './UserProfile.jsx';
@@ -55,7 +53,7 @@ const Navbar = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   return (
-    <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative z-40">
+    <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative bg-white">
 
       <NavButton title="Menu" customFunc={handleActiveMenu} icon={<AiOutlineMenu />} />
       <div className="flex">
@@ -82,7 +80,6 @@ const Navbar = () => {
           </div>
         </TooltipComponent>
 
-        {isClicked.cart && (<Cart />)}
         {isClicked.chat && (<Chat />)}
         {isClicked.notification && (<Notification />)}
         {isClicked.userProfile && (<UserProfile />)}

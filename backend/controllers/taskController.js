@@ -12,7 +12,6 @@ const getTasks = async (req, res) => {
     // If projectId is provided in the request, add it to the query
     if (projectId) {
         query = { projectId }; // Assuming 'projectId' is the name of the field in your Task model
-        console.log(projectId);
     }
 
     try {
@@ -65,18 +64,18 @@ const getTasksCount = async (req, res) => {
     try{
         const tasksCount = await Task.countDocuments({})
         res.status(200).json(tasksCount)
-        console.log(tasksCount)
+        console.log(tasksCount) 
     }
     catch(error){res.status(400).json({error: error.message})}
     };
 
 //create new task
 const createTask = async(req, res) => {
-    const{projectId, task_name, task_description,status, priority, due_date} = req.body
+    const{projectId, task_name, task_description,status, priority, due_date,StartTime} = req.body
 
     //add doc to db
     try{
-        const task = await Task.create({projectId, task_name, task_description, priority,status, due_date})
+        const task = await Task.create({projectId, task_name, task_description, priority,status, due_date, StartTime})
         res.status(200).json(task)
     }catch(error){res.status(400).json({error: error.message})}
 

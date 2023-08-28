@@ -15,8 +15,11 @@ import axios from 'axios';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
-import { FiPercent, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
-import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
+import { FiPercent, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart,FiList } from 'react-icons/fi';
+import { BsKanban, BsBarChart, BsDatabaseFillGear, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
+import Sidebar from '../components/Sidebar';
+import Navbar from '../components/Navbar';
+
 
 const DropDown = ({ currentMode }) => (
   <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
@@ -45,7 +48,7 @@ const Dashboard = () => {
       pcColor: 'red-600',
     },
     {
-      icon: <BsBoxSeam />,
+      icon: <BsDatabaseFillGear />,
       amount: `${projectsCount}`,
       // percentage: '+23%',
       title: 'Projects',
@@ -54,7 +57,7 @@ const Dashboard = () => {
       pcColor: 'green-600',
     },
     {
-      icon: <FiBarChart />,
+      icon: <FiList />,
       amount: `${tasksCount}`,
       // percentage: '+38%',
       title: 'Tasks',
@@ -150,12 +153,25 @@ const Dashboard = () => {
     }
     getProjects();
   }, []);
-
+  const {activeMenu} = useStateContext();
   return (
-    
-    <div className="mt-10">
+<>
+<div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+    <Navbar />
+  </div>
+         <div className='flex relative dark:bg-main-dark-bg'>
+{activeMenu? (
+  <div className='w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white z-50'>
+    <Sidebar />
+  </div>
+) : (
+  <div className='w-0 dark:bg-secondary-dark-bg'>
+    <Sidebar />
+  </div>
+)}
+    <div className="mt-10 ml-32">
       
-      <div className="flex flex-wrap lg:flex-nowrap justify-center ">
+      <div className="flex flex-wrap lg:flex-nowrap justify-center">
         <div className="flex m-3 flex-wrap justify-center gap-1 items-center">
           {dashboardData.map((item) => (
             <div key={item.title} className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-72  p-4 pt-9 rounded-2xl ">
@@ -187,7 +203,7 @@ const Dashboard = () => {
           <div className="flex justify-between">
             <p className="text-xl font-semibold">Recent Users</p>
             <button type="button" className="text-xl font-semibold text-gray-500">
-              <IoIosMore />
+            <MdOutlineSupervisorAccount />
             </button>
           </div>
 
@@ -215,7 +231,7 @@ const Dashboard = () => {
           <div className="flex justify-between">
             <p className="text-xl font-semibold">Recent Projects</p>
             <button type="button" className="text-xl font-semibold text-gray-500">
-              <IoIosMore />
+            <BsDatabaseFillGear />
             </button>
           </div>
 
@@ -244,7 +260,7 @@ const Dashboard = () => {
           <div className="flex justify-between">
             <p className="text-xl font-semibold">Recent Tasks</p>
             <button type="button" className="text-xl font-semibold text-gray-500">
-              <IoIosMore />
+            <FiList />
             </button>
           </div>
 
@@ -269,7 +285,7 @@ const Dashboard = () => {
 
         </div>
        
-        <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
+        {/* <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3"> */}
           {/* <div className="flex justify-between">
             <p className="text-xl font-semibold">Recent Tasks</p>
             <button type="button" className="text-xl font-semibold text-gray-500">
@@ -302,6 +318,8 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+    
+</>
   );
 };
 
