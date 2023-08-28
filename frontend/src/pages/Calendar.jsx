@@ -10,7 +10,6 @@ import { useStateContext } from '../contexts/ContextProvider';
 import Navbar from '../components/Navbar';
 
 
-
 // eslint-disable-next-line react/destructuring-assignment
 const PropertyPane = (props) => <div className="mt-5">{props.children}</div>;
 
@@ -19,7 +18,8 @@ const Scheduler = () => {
   const [tasks, setTasks] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const projectId = searchParams.get('projectId');
-  
+  const [selectedStatus, setSelectedStatus] = useState('');
+
   
   
   const scheduleData = [
@@ -49,36 +49,7 @@ const Scheduler = () => {
 
   }, [])
 
-  const handlePopupOpen = (args) => {
-    if (args.type === 'Editor') {
-      // Access the default editor elements
-      const editorElement = args.element.querySelector('.e-schedule-form');
-      const titleElement = editorElement.querySelector('.e-subject');
-      const locationElement = editorElement.querySelector('.e-quick-popup-wrapper .e-location-icon');
-      const descriptionElement = editorElement.querySelector('.e-description');
 
-  //     if (titleElement?.parentElement?.previousSibling) {
-  //       titleElement.parentElement.previousSibling.innerText = 'Task Name';
-  //     }
-  if (locationElement) {
-    locationElement.style.setProperty('display', 'none', 'important');
-
-  }
-      const priorityContainer = document.createElement('div');
-      priorityContainer.classList.add('e-form-icon');
-     
-       if (locationElement.parentElement) {
-      locationElement.parentElement.parentElement.insertBefore(
-        priorityContainer,
-        locationElement.parentElement
-      );
-    }
-
-  //     descriptionElement.value = 'Custom description goes here';
-  //     const prioritySelect = editorElement.querySelector('.e-priority');
-  //     prioritySelect.value = 'medium'; // Set a default value
-  //     locationElement.parentElement.style.display = 'none';
-  }}
   const handleActionBegin = (args) => {
     console.log('Event Data:', args.data);
     console.log('Action type:', args.requestType);
@@ -248,11 +219,11 @@ const Scheduler = () => {
         selectedDate={new Date(2023, 7, 10)}
         eventSettings={{
           dataSource: transformedData, allowEditing: true,
-          allowDeleting: true
+          allowDeleting: true,
+         
         }}
         dragStart={onDragStart}
         actionBegin={handleActionBegin}
-        // popupOpen={handlePopupOpen}
       >
 
         <ViewsDirective>
@@ -273,7 +244,7 @@ const Scheduler = () => {
                   placeholder="Current Date"
                   floatLabelType="Always"
                   change={change}
-                  PopupOpen={handlePopupOpen}
+                  // PopupOpen={handlePopupOpen}
                 />
               </td>
             </tr>
@@ -287,3 +258,4 @@ const Scheduler = () => {
 };
 
 export default Scheduler;
+

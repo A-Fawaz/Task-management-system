@@ -5,7 +5,17 @@ body{
     padding:0;
     font-family: "Open Sans", sans-serif;
 }
-
+.e-location-container::before {
+    content: "Status";
+    color: gray;
+  }
+  .e-float-text.e-label-top[for="Status"] {
+    display: none;
+  }
+  .e-location-icon.e-icons::before{
+    display: none;
+    content: "status";
+  }
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
