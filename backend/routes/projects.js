@@ -12,7 +12,7 @@ const{
 const router = express.Router()
 
 //GET all projects
-router.get('/',protect, getProjects)
+router.get('/', getProjects)
 //GET number of projects
 router.get('/count', getProjectsCounter)
 
