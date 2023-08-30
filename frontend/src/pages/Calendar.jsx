@@ -5,12 +5,13 @@ import axios from "axios";
 import { scheduleData } from '../data/dummy';
 import Header from '../components/Header';
 import { useParams, useSearchParams } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
+// import Sidebar from '../components/Sidebar';
 import { useStateContext } from '../contexts/ContextProvider';
-import Navbar from '../components/Navbar';
+// import Navbar from '../components/Navbar';
+import jwt_decode from 'jwt-decode';
+import { useCookies } from 'react-cookie'; 
 
 
-// eslint-disable-next-line react/destructuring-assignment
 const PropertyPane = (props) => <div className="mt-5">{props.children}</div>;
 
 const Scheduler = () => {
@@ -19,6 +20,10 @@ const Scheduler = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const projectId = searchParams.get('projectId');
   const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState([]);
+
+
 
   
   
@@ -36,6 +41,48 @@ const Scheduler = () => {
 
 
   useEffect(() => {
+    const scheduleForm = document.querySelector('.e-schedule-form.e-lib.e-formvalidator');
+  
+    if (scheduleForm && !scheduleForm.querySelector('select[name="AssignedTo"]')) {
+      const selectElement = document.createElement('select');
+      selectElement.className = 'e-field';
+      selectElement.name = 'AssignedTo';
+  
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = 'Assign to member';
+      selectElement.appendChild(defaultOption);
+  
+      users.forEach((user) => {
+        const option = document.createElement('option');
+        option.value = user._id;
+        option.textContent = user.username;
+        selectElement.appendChild(option);
+      });
+  
+      scheduleForm.appendChild(selectElement);
+  
+      selectElement.addEventListener('change', (event) => {
+        setSelectedUser(event.target.value);
+      });
+    } else {
+      console.log('Schedule form not found or select element already exists.');
+    }
+  }, []);
+
+  useEffect(() => {
+    async function getUsers() {
+      try {
+        const response = await axios.get('http://localhost:3001/api/users');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    }
+    getUsers();
+  }, [users]);
+  
+  useEffect(() => {
     async function getTasks() {
       try {
         const response = await axios.get('http://localhost:3001/api/tasks?projectId=' + projectId);
@@ -47,7 +94,25 @@ const Scheduler = () => {
     }
     getTasks();
 
-  }, [])
+  //   const token = cookies.jwt;
+
+  // if (token) {
+  //   const decodedToken = jwt_decode(token);
+  //   const userRole = decodedToken.role;
+  //   setUserRole(userRole);
+  // }
+
+    
+  }, [projectId])
+
+ 
+
+// ...
+
+const [userRole, setUserRole] = useState(null);
+const [cookies] = useCookies(['jwt']); 
+
+
 
 
   const handleActionBegin = (args) => {
@@ -56,12 +121,13 @@ const Scheduler = () => {
     console.log('Args:', args);
   console.log('args.data:', args.data);
   
+  // if (userRole === 'creator') {
     if (args.requestType === 'eventRemove') {
-      const deletedEventId = args.data[0].Id; // Assuming your data has an "Id" field
-      // Send a DELETE request to your backend API
+      const deletedEventId = args.data[0].Id; // Assuming your data has an "Id" field 
+
       axios.delete(`http://localhost:3001/api/tasks/${deletedEventId}`)
-        .then((response) => {
-          // Remove the deleted task from your frontend state
+        .then((response) => { 
+
           const updatedTasks = tasks.filter((task) => task._id !== deletedEventId);
           setTasks(updatedTasks);
         })
@@ -101,7 +167,8 @@ const Scheduler = () => {
         status: eventData.Location, // Use 'status' field name expected by the backend
         priority: 'medium', // You can set this based on your requirements
         due_date: eventData.EndTime, // Use 'due_date' field name expected by the backend
-        StartTime: eventData.StartTime
+        StartTime: eventData.StartTime, 
+        assigned_to: selectedUser  // Add the assigned user's ID here
       };
 
       axios.post('http://localhost:3001/api/tasks', newTask)
@@ -144,7 +211,8 @@ const Scheduler = () => {
         status: eventData.Location, // Use 'status' field name expected by the backend
         priority: 'medium', // You can set this based on your requirements
         due_date: eventData.EndTime, // Use 'due_date' field name expected by the backend
-        StartTime: eventData.StartTime
+        StartTime: eventData.StartTime,
+        assigned_to: selectedUser, // Add the assigned user's ID here
 
       };
   
@@ -162,9 +230,11 @@ const Scheduler = () => {
         .catch((error) => {
           console.error('Error updating task:', error);
         });
-    }
+    }  
+  // } else {
+  //     console.log('User does not have permission to perform this action.');
+  //   }
   };
-
   const deleteTask = async (taskId) => {
     try {
       await axios.delete(`http://localhost:3001/api/tasks/${taskId}`);
@@ -175,13 +245,15 @@ const Scheduler = () => {
     }
   };
 
+
   const transformedData = tasks.map((task) => ({
     Id: task._id,
     Subject: task.task_name,
     StartTime: new Date(task.StartTime),
     EndTime: new Date(task.due_date),
     Location: task.status,
-    Description: task.task_description
+    Description: task.task_description,
+    AssignedTo: task.assigned_to
     // Other properties mapping...
   }));
   // console.log(transformedData)
@@ -198,7 +270,7 @@ const Scheduler = () => {
   
   return (<>
 
-    <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+    {/* <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
               <Navbar />
             </div>
        <div className='flex relative dark:bg-main-dark-bg h-full '>
@@ -210,7 +282,7 @@ const Scheduler = () => {
   <div className='w-0 dark:bg-secondary-dark-bg'>
     <Sidebar />
   </div>
-)}
+)} */}
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="App" title="Calendar" />
       <ScheduleComponent
@@ -220,6 +292,7 @@ const Scheduler = () => {
         eventSettings={{
           dataSource: transformedData, allowEditing: true,
           allowDeleting: true,
+        
          
         }}
         dragStart={onDragStart}
@@ -252,7 +325,7 @@ const Scheduler = () => {
         </table>
       </PropertyPane>
     </div>
-    </div>
+    {/* </div> */}
     </>
   );
 };

@@ -10,6 +10,8 @@ import { KanbanComponent, ColumnsDirective, ColumnDirective } from '@syncfusion/
 import { kanbanGrid } from '../data/dummy';
 import Header from '../components/Header';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import jwt_decode from 'jwt-decode'
 
 const kanbanData = [
   {
@@ -33,6 +35,8 @@ const Kanban = () => {
   const [tasks, setTasks] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedTaskTitle, setSelectedTaskTitle] = useState(""); // Add this state
+  const {activeMenu} = useStateContext();
+  const [cookies] = useCookies(['jwt']);
  
   // const openModal = (taskTitle) => {
   //   setSelectedTaskTitle(taskTitle); // Set the selected task title
@@ -44,45 +48,53 @@ const Kanban = () => {
   useEffect(() => {
     async function getTasks() {
       try {
-        const response = await axios.get('http://localhost:3001/api/tasks?projectId=' + projectId);
+        const token = cookies.jwt;
+        const decodedToken = jwt_decode(token);
+        const userId = decodedToken.userId;
+
+        const response = await axios.get(`http://localhost:3001/api/tasks?projectId=${projectId}&assigned_to=${userId}`);
         console.log(response.data);
         setTasks(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     }
-    getTasks();
+    if (cookies.jwt) {
+      getTasks();
+    }
+  }, [cookies.jwt]);
 
-  }, [])
+  // useEffect(() => {
+  //   async function getTasks() {
+  //     try {
+  //       const response = await axios.get('http://localhost:3001/api/tasks?projectId=' + projectId);
+  //       setTasks(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   }
+  //   getTasks();
+  // }, []);
+  const [selectedTaskStatus, setSelectedTaskStatus] = useState("");
+  const handleDialogClose = (args) => {
+    if (args.requestType === 'Add' || args.requestType === 'Edit') {
+      const updatedTask = {
+        status: selectedTaskStatus, // Use the selected status here
+        // Other properties...
+      };
 
-  // const handleActionBegin = (args) => {
-  //   if (args.requestType === 'cardChange') {
-  //     const eventData = args.data;
+      axios
+        .patch(`http://localhost:3001/api/tasks/${args.data.Id}`, updatedTask)
+        .then((response) => {
+          console.log('Task status updated:', response.data);
+        })
+        .catch((error) => {
+          console.error('Error updating task:', error);
+        });
+    }
+  };
 
-  //     // Create the updated task object
-  //     const updatedTask = {
-  //       projectId: projectId,
-  //       task_name: eventData.Title,
-  //       task_description: eventData.Summary,
-  //       status: eventData.Status,
-  //       // Other properties mapping...
-  //     };
-
-      // Send a PATCH request to update the task
-    //   axios.patch(`http://localhost:3001/api/tasks/${eventData.Id}`, updatedTask)
-    //     .then((response) => {
-    //       const updatedTasks = tasks.map((task) => {
-    //         if (task._id === eventData.Id) {
-    //           return { ...task, ...updatedTask };
-    //         }
-    //         return task;
-    //       });
-    //       setTasks(updatedTasks);
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error updating task:', error);
-    //     });
-    // }
+  
     
   
 
@@ -95,29 +107,17 @@ const Kanban = () => {
     // Other properties mapping... 
   }));
   console.log(transformedData)
-  const {activeMenu} = useStateContext();
 
   return (<>
 
-    <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-    <Navbar />
-  </div>
-    <div className='flex relative dark:bg-main-dark-bg'>
-{activeMenu? (
-  <div className='w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white z-50'>
-    <Sidebar />
-  </div>
-) : (
-  <div className='w-0 dark:bg-secondary-dark-bg'>
-    <Sidebar />
-  </div>
-)}
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="App" title="Kanban" />
       <KanbanComponent
         id="kanban"
         keyField="Status"
         dataSource={transformedData}
+        dialogSettings={{ close: handleDialogClose }}
+
         cardSettings={{
           contentField: 'Summary',
           headerField: 'Id',
@@ -137,17 +137,17 @@ const Kanban = () => {
               </table>
             </div>
           </div>
-          
+           
           )
         }}
-        // actionBegin={handleActionBegin}
+        // actionComplete={handleActionComplete}
+
       >
         <ColumnsDirective>
           {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           {kanbanGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
         </ColumnsDirective>
       </KanbanComponent>
-    </div>
     </div>
     </>
   )

@@ -32,6 +32,11 @@ const taskSchema = new Schema({
     StartTime:{
         type: Date,
         required: true
+    },
+    assigned_to: {
+        type: mongoose.Schema.Types.ObjectId, // Store user IDs
+        ref: 'User', // Reference the user collection/model
+        required: false
     }
     
 },{timestamps:true}

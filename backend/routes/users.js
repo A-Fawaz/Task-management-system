@@ -28,9 +28,9 @@ router.post('/logout', logoutUser)
 router.get('/',getUsers)
 
 //Get users count
-router.get('/count', getUsersCount)
+router.get('/count',getUsersCount)
 //GET a single user
-router.get('/:id',protect,getUser)
+router.get('/:id',getUser)
 
 //POST a new task
 

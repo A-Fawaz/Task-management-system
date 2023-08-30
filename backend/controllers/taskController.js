@@ -6,14 +6,17 @@ const mongoose = require('mongoose')
 //     res.status(200).json(tasks)
 // }
 const getTasks = async (req, res) => {
-    const { projectId } = req.query;
+    const { projectId, assigned_to } = req.query;
     let query = {};
 
     // If projectId is provided in the request, add it to the query
     if (projectId) {
         query = { projectId }; // Assuming 'projectId' is the name of the field in your Task model
     }
-
+    if (assigned_to) {
+        query = { assigned_to }; // Assuming 'assigned_to' is the name of the field in your Task model
+    }
+    
     try {
         const tasks = await Task.find(query).sort({ createdAt: 'desc' });
         res.status(200).json(tasks);

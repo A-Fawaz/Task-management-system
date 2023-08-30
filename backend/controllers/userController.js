@@ -4,8 +4,8 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 
 
-const createToken = (res, _id) => {
-    const token =  jwt.sign({_id}, process.env.SECRET, {expiresIn: '1d'})
+const createToken = (res, _id,role) => {
+    const token =  jwt.sign({_id, role }, process.env.SECRET, {expiresIn: '1d'})
     res.cookie('jwt',token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',

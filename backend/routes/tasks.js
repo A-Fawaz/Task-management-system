@@ -8,7 +8,7 @@ const{
     getTasksCount,
     getTasksWithProjectInfo
 } = require('../controllers/taskController')
-
+const { protect } = require('../middleware/authMiddleware');
 const router = express.Router()
 
 //GET all tasks
@@ -19,7 +19,7 @@ router.get('/count', getTasksCount)
 router.get('/TasksWithProjectInfo', getTasksWithProjectInfo)
 
 //GET a single task
-router.get('/:id', getTask)
+router.get('/:id',getTask)
 
 //POST a new task
 

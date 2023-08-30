@@ -1,24 +1,17 @@
 import React, { useState } from 'react';
-import { GoMoveToStart } from 'react-icons/go';
-import { IoIosMore } from 'react-icons/io';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { useEffect } from 'react';
-import Stacked from '../components/Stacked';
-import  SparkLine  from '../components/Stacked';
-import  Pie  from '../components/Stacked';
-import  Button  from '../components/Stacked';
-import  LineChart  from '../components/Stacked';
-import { medicalproBranding, recentTransactions, weeklyStats, dropdownData, SparklineAreaData, ecomPieChartData } from '../data/dummy';
+import { dropdownData } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
-import product9 from '../data/product9.jpg';
 import axios from 'axios';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
-import { HiOutlineRefresh } from 'react-icons/hi';
-import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
-import { FiPercent, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart,FiList } from 'react-icons/fi';
-import { BsKanban, BsBarChart, BsDatabaseFillGear, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
+import { FiList } from 'react-icons/fi';
+import { BsDatabaseFillGear} from 'react-icons/bs';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
+import jwt_decode from 'jwt-decode';
+import {Navigate} from 'react-router-dom';
+
 
 
 const DropDown = ({ currentMode }) => (
@@ -36,12 +29,28 @@ const Dashboard = () => {
   // const [tasks, setTasks] = useState();
   const [projects, setProjects] = useState();
   const [TasksWithProjectInfo, setTasksWithProjectInfo] = useState();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // useEffect(() => {
+  //   async function checkAdminRole() {
+  //     const token = cookies.jwt;
+  
+  //     if (token) {
+  //       const decodedToken = jwt_decode(token);
+  //       const userRole = decodedToken.role;
+  
+  //       setIsAdmin(userRole === 'admin');
+  //     }
+  //   }
+  
+  //   checkAdminRole();
+  // }, []);
+ 
 
   const dashboardData = [
     {
       icon: <MdOutlineSupervisorAccount />,
       amount: `${usersCount}`,
-      // percentage: '-4%',
       title: 'Users',
       iconColor: '#03C9D7',
       iconBg: '#E5FAFB',
@@ -50,7 +59,6 @@ const Dashboard = () => {
     {
       icon: <BsDatabaseFillGear />,
       amount: `${projectsCount}`,
-      // percentage: '+23%',
       title: 'Projects',
       iconColor: 'rgb(255, 244, 229)',
       iconBg: 'rgb(254, 201, 15)',
@@ -59,7 +67,6 @@ const Dashboard = () => {
     {
       icon: <FiList />,
       amount: `${tasksCount}`,
-      // percentage: '+38%',
       title: 'Tasks',
       iconColor: 'rgb(228, 106, 118)',
       iconBg: 'rgb(255, 244, 229)',
@@ -128,20 +135,6 @@ const Dashboard = () => {
       }
     }
     getUsers();
-
-
-    // async function getTasks() {
-    //   try {
-    //     const response = await axios.get('http://localhost:3001/api/tasks');
-    //     console.log(response.data);
-    //     setTasks(response.data);
-    //   } catch (error) {
-    //     console.error('Error fetching data:', error);
-    //   }
-    // }
-    // getTasks();
-
-
     async function getProjects() {
       try {
         const response = await axios.get('http://localhost:3001/api/projects');
@@ -156,19 +149,8 @@ const Dashboard = () => {
   const {activeMenu} = useStateContext();
   return (
 <>
-<div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-    <Navbar />
-  </div>
-         <div className='flex relative dark:bg-main-dark-bg'>
-{activeMenu? (
-  <div className='w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white z-50'>
-    <Sidebar />
-  </div>
-) : (
-  <div className='w-0 dark:bg-secondary-dark-bg'>
-    <Sidebar />
-  </div>
-)}
+{/* {isAdmin ? ( <div> */}
+
     <div className="mt-10 ml-32">
       
       <div className="flex flex-wrap lg:flex-nowrap justify-center">
@@ -222,7 +204,6 @@ const Dashboard = () => {
               </div>
             ))}
             <div className="mt-4">
-              {/* <SparkLine currentColor={currentColor} id="area-sparkLine" height="160px" type="Area" data={SparklineAreaData} width="320" color="rgb(242, 252, 253)" /> */}
             </div>
           </div>
 
@@ -250,7 +231,6 @@ const Dashboard = () => {
               </div>
             ))}
             <div className="mt-4">
-              {/* <SparkLine currentColor={currentColor} id="area-sparkLine" height="160px" type="Area" data={SparklineAreaData} width="320" color="rgb(242, 252, 253)" /> */}
             </div>
           </div>
 
@@ -278,47 +258,16 @@ const Dashboard = () => {
                 <p className={`text-${item.pcColor}`}>{item.project.project_name}</p>
               </div>
             ))}
-            {/* <div className="mt-4">
-              <SparkLine currentColor={currentColor} id="area-sparkLine" height="160px" type="Area" data={SparklineAreaData} width="320" color="rgb(242, 252, 253)" />
-            </div> */}
+          
           </div>
 
         </div>
-       
-        {/* <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3"> */}
-          {/* <div className="flex justify-between">
-            <p className="text-xl font-semibold">Recent Tasks</p>
-            <button type="button" className="text-xl font-semibold text-gray-500">
-              <IoIosMore />
-            </button>
-          </div>
-          <div className="mt-10">
-            <img
-              className="md:w-96 h-50 "
-              src={product9}
-              alt=""
-            />
-            <div className="mt-8">
-              <p className="font-semibold text-lg">React 18 coming soon!</p>
-              <p className="text-gray-400 ">By Johnathan Doe</p>
-              <p className="mt-8 text-sm text-gray-400">
-                This will be the small description for the news you have shown
-                here. There could be some great info.
-              </p>
-              <div className="mt-3">
-                <Button
-                  color="white"
-                  bgColor={currentColor}
-                  text="Read More"
-                  borderRadius="10px"
-                />
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
-    </div>
-    
+    {/* </div>
+     ) : (
+      <Navigate to="/unauthorized" />
+    )} */}
 </>
   );
 };

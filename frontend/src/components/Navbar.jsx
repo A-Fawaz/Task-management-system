@@ -9,7 +9,6 @@ import avatar from '../data/avatar.jpg';
 // import { Cart, Chat, Notification, UserProfile } from './components';
 import Chat from './Chat.jsx';
 import Notification from './Notification.jsx';
-import UserProfile from './UserProfile.jsx';
 import { useStateContext } from '../contexts/ContextProvider';
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -82,7 +81,6 @@ const Navbar = () => {
 
         {isClicked.chat && (<Chat />)}
         {isClicked.notification && (<Notification />)}
-        {isClicked.userProfile && (<UserProfile />)}
       </div>
     </div>
   );

@@ -5,15 +5,29 @@ body{
     padding:0;
     font-family: "Open Sans", sans-serif;
 }
-.e-location-container::before {
+.e-location-container {
     content: "Status";
     color: gray;
+    display: none;
   }
-  .e-float-text.e-label-top[for="Status"] {
+  .e-float-text.e-label-top[for="Location"] {
     display: none;
   }
   .e-location-icon.e-icons::before{
     display: none;
+  }
+  .e-field {
+    width: 100%; /* Make the select element take up full width */
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+  }
+
+  .e-field option {
+    font-size: 14px;
   }
 @tailwind base;
 @tailwind components;

@@ -1,4 +1,5 @@
 const express = require('express')
+const { protect } = require('../middleware/authMiddleware');
 
 const{
     getProjects,
@@ -11,7 +12,7 @@ const{
 const router = express.Router()
 
 //GET all projects
-router.get('/', getProjects)
+router.get('/',protect, getProjects)
 //GET number of projects
 router.get('/count', getProjectsCounter)
 

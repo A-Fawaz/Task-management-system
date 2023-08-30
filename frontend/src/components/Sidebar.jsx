@@ -8,6 +8,8 @@ import { BsKanban } from 'react-icons/bs';
 import { MdOutlineCancel } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { useParams, useSearchParams } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+
 
 
 // import { links } from '../data/dummy';
@@ -20,10 +22,23 @@ const   Sidebar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   console.log(searchParams.get('projectId'));
   const projectId = searchParams.get('projectId');
-  const userRole = 'user';
+  const [userRole, setUserRole] = useState(null);
+
+  // const userRole = 'admin';
   const updateToValue = (value) => {
     setToValue(value);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      const decodedToken = jwt_decode(token);
+      const fetchedUserRole = decodedToken.role;
+  
+      setUserRole(fetchedUserRole);
+    }
+  }, []);
   useEffect(() => {
   
   if (userRole === 'admin') {
@@ -34,7 +49,7 @@ const   Sidebar = () => {
         title: 'Dashboard',
         links: [
           {
-            route: '',
+            route: 'dashboard',
             name: 'Stats',
             icon: <FiPercent />,
           },
@@ -45,13 +60,13 @@ const   Sidebar = () => {
         title: 'Pages',
         links: [
           {
-            route: 'projectspage',
-            name: 'Projects',
+            route: 'payment',
+            name: 'Payment',
             icon: <FiEdit />,
           },
           {
-            route: 'Userspage',
-            name: 'Users',
+            route: 'profits',
+            name: 'Profits',
             icon: <FiEdit />,
           }
           
@@ -99,13 +114,7 @@ const   Sidebar = () => {
             route: 'kanban/?projectId='+ projectId,
             name: 'kanban',
             icon: <BsKanban />,
-          },
-          // {
-          //   route: 'editor',
-          //   name: 'editor',
-          //   icon: <FiEdit />,
-          // },
-       
+          }
         ],
       },  
       {
@@ -128,7 +137,7 @@ const   Sidebar = () => {
     ]);
     // Additional routes for 'user' role can be added here, if needed
   }
-}, [userRole]);
+}, [userRole, projectId]);
   
   // Now, 'filteredLinks' will contain the routes based on the userRole
   
