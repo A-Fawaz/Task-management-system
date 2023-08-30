@@ -270,19 +270,7 @@ const [cookies] = useCookies(['jwt']);
   
   return (<>
 
-    {/* <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-              <Navbar />
-            </div>
-       <div className='flex relative dark:bg-main-dark-bg h-full '>
-{activeMenu? (
-  <div className='w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white z-50 h-full'>
-    <Sidebar />
-  </div>
-) : (
-  <div className='w-0 dark:bg-secondary-dark-bg'>
-    <Sidebar />
-  </div>
-)} */}
+
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="App" title="Calendar" />
       <ScheduleComponent
@@ -325,7 +313,6 @@ const [cookies] = useCookies(['jwt']);
         </table>
       </PropertyPane>
     </div>
-    {/* </div> */}
     </>
   );
 };
